@@ -6,3 +6,7 @@ temp/
 
 #ignore all certificates
 e-reg-backend/credentials/
+
+#ignore all node_modules
+e-reg-backend/node_modules/
+e-reg-frontend/node_modules/
