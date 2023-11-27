@@ -1,0 +1,15 @@
+{
+  "name": "e-reg-frontend",
+  "version": "1.0.0",
+  "description": "For the front end form of e-reg system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/http-server -a localhost -p 8000 -c-1"
+  },
+  "author": "Abilash Sivalingam",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

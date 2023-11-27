@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="topnav">
+        <a href="#">Link</a>
+        <a href="#">Link</a>
+        <a href="#">Link</a>
+      </div>
+      
+      <div class="content">
+        <h2>CSS Template</h2>
+        <p>A topnav, content and a footer.</p>
+        <div class="form">
+            <form id="voter_registration_form">
+                <label id="voter_registration_data"></label><br>
+                <button type="submit">Submit </button>
+            </form>
+        </div>
+        
+      </div>
+      
+      <div class="footer">
+        <p>Footer</p>
+      </div>
+
+	<script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const election_center_id = urlParams.get('election_center');
+        const nric = urlParams.get('nric');
+
+        document.getElementById("voter_registration_data").innerHTML = "You are registering voter ID: " + nric + " for election center: " + election_center_id;
+
+        let election_center_form = document.getElementById("voter_registration_form");
+        console.log(`http://127.0.0.1:3001/voter-register?nric=${nric}`);
+
+        election_center_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            fetch(`http://127.0.0.1:3001/voter-register?nric=${nric}`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' }
+                })
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json["inserted"]){
+                        alert("Succesfully Registered")
+                    }
+                    else {
+                        alert("Voter has already been registered to vote!")
+                    }
+                    window.location.href=`/check-voters.html?election_center_id=${election_center_id}`;
+                })
+                .catch(err => console.log(err));
+        } 
+        );
+    </script>
+  </body>
+</html>

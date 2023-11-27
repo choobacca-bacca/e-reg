@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="topnav">
+        <a href="#">Link</a>
+        <a href="#">Link</a>
+        <a href="#">Link</a>
+      </div>
+      
+      <div class="content">
+        <h2>CSS Template</h2>
+        <p>A topnav, content and a footer.</p>
+        <div class="form">
+            <form id="voter_id_form">
+                <label for="voter_id">Voter ID:</label><br>
+                <input type="text" id="voter_id" placeholder="Key in the Voters ID here"><br>
+                <button type="submit">Submit </button>
+            </form>
+        </div>
+        
+      </div>
+      
+      <div class="footer">
+        <p>Footer</p>
+      </div>
+
+	<script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const election_center_id = urlParams.get('election_center_id');
+        
+        let voter_id_form = document.getElementById("voter_id_form");
+
+        voter_id_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            let voter_id = document.getElementById("voter_id");
+            if (voter_id.value == "") {
+            alert("Ensure you input a value !");
+            } else {
+                // perform operation with form input
+                alert("This form has been successfully submitted!");
+                console.log(
+                `You are now checking if voter: ${voter_id.value} can vote at election center ${election_center_id}`
+                );
+                const nric = voter_id.value;
+                // window.location.href=`/register-voters.html?election_center_id=${voter_id.value}&election_center=${election_center_id}`;
+                fetch(`http://127.0.0.1:3001/?nric=${voter_id.value}&election_center_id=${election_center_id}`)
+                    .then((response) => response.json())
+                    .then((json) => {
+                      console.log(json);
+                        if (json["correct_center"] && json["valid_voter"]){
+                          window.location.href=`/register-voters.html?nric=${nric}&election_center=${election_center_id}`;
+                        }
+                        else if (json["valid_voter"]){
+                          alert("This voter is at the wrong center!");
+                        }
+                        else{
+                          alert("This is not a registered voter!");
+                        }
+                    });
+                voter_id.value = "";
+            }
+        });
+
+    </script>
+  </body>
+</html>
